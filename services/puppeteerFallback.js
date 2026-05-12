@@ -58,7 +58,7 @@ export async function fallbackPuppeteerSubmit(formUrl, formData) {
     }
     const prefillUrl = `${formUrl}?${params.toString()}`;
     
-    await page.goto(prefillUrl, { waitUntil: 'networkidle2' });
+    await page.goto(prefillUrl, { waitUntil: 'networkidle2', timeout: 60000 });
     await randomDelay(1000, 2000);
 
     // Attempt to submit
@@ -66,7 +66,7 @@ export async function fallbackPuppeteerSubmit(formUrl, formData) {
     try {
       await page.waitForSelector(submitButtonSelector, { timeout: 5000 });
       await page.click(submitButtonSelector);
-      await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 10000 });
+      await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 30000 });
     } catch(err) {
       console.warn("Could not find native submit button, trying generic click.");
       // Fallback: hit Enter on the last input
